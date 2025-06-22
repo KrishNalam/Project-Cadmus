@@ -39,13 +39,13 @@ let currentInterval = null
 function populateUsers(allUsers) {
     for (let x of allUsers) {
         const user = document.createElement('div')
-        user.innerText = x.name
-        user.id = x.name
+        user.innerText = x
+        user.id = x
         user.classList.add('user')
         const send = document.createElement('input')
         send.placeholder = 'Send a message...'
         send.autocomplete = 'off'
-        send.id = 'send' + x.name
+        send.id = 'send' + x
         send.classList = 'send'
         document.getElementById('sidebar').appendChild(user)
         document.getElementById('contentArea').appendChild(send)
@@ -57,15 +57,15 @@ function populateUsers(allUsers) {
                     'none'
             }
             user.classList.add('active')
-            document.getElementById('send' + x.name).style.display = 'flex'
+            document.getElementById('send' + x).style.display = 'flex'
             document.getElementById('chatHeader').innerText = user.innerText
             document.getElementById('chatHeader').style.display = 'flex'
-            loadMessages(x.name)
+            loadMessages(x)
             // Clear previous interval
             if (currentInterval) clearInterval(currentInterval)
             // Start a new interval for the selected user
-            currentInterval = setInterval(() => loadMessages(x.name), 30000)
-            document.getElementById('send' + x.name).focus()
+            currentInterval = setInterval(() => loadMessages(x), 30000)
+            document.getElementById('send' + x).focus()
         })
     }
 }
@@ -90,12 +90,12 @@ function populateMgs(allMsgs) {
             let msg = document.createElement('div')
             if (allMsgs[i].sender === loggedUser) {
                 msg.innerHTML = DOMPurify.sanitize(allMsgs[i].message, {
-                    ALLOWED_TAGS: ['b', 'i'],
+                    ALLOWED_TAGS: ['b', 'i', 'a'],
                 })
                 msg.classList.add('sending')
             } else {
                 msg.innerHTML = DOMPurify.sanitize(allMsgs[i].message, {
-                    ALLOWED_TAGS: ['b', 'i'],
+                    ALLOWED_TAGS: ['b', 'i', 'a'],
                 })
                 msg.classList.add('receiving')
             }
@@ -140,7 +140,12 @@ function sendMsg() {
     let convoId = [name, loggedUser].sort()
     const input = document.getElementById('send' + name)
     if (!input || input.value.trim() === '') return
-
+    const match = input.value.match(/https?:\/\/www.youtube.com[^\s]+/g)
+    for (let i = 0; i < match.length; i++) {
+        const send = document.createElement('iframe')
+        send.src = match[i]
+        document.getElementById('sidebar').appendChild(send)
+    }
     fetch(import.meta.env.VITE_BACKEND + 'chat/create', {
         method: 'POST',
         headers: {

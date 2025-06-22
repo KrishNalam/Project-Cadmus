@@ -27,6 +27,12 @@ const port = 8080
 
 var allowlist = ['http://localhost:5173', 'https://cadmus.krishnalam.com']
 
+app.use(
+    helmet({
+        xFrameOptions: { action: 'sameorigin' },
+    })
+)
+
 const corsOptionsDelegate = (req, callback) => {
     const origin = req.header('Origin')
     const isAllowed = allowlist.includes(origin)
@@ -36,8 +42,6 @@ const corsOptionsDelegate = (req, callback) => {
 app.use(cors(corsOptionsDelegate))
 
 app.use(express.json())
-
-app.use(helmet())
 
 app.use('/user', userRoute)
 app.use('/chat', chatRoute)

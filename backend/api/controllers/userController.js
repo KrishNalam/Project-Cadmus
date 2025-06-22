@@ -29,8 +29,9 @@ async function findUser(req, res) {
 
 async function findAllUsers(_req, res) {
     try {
-        const allUsers = await User.findAll()
-        res.status(200).json(allUsers)
+        const allUsers = await User.findAll({ attributes: ['name'] })
+        const allNames = allUsers.map((user) => user.name)
+        res.status(200).json(allNames)
     } catch (error) {
         console.error('Error retrieving user:', error)
         res.status(500).json({
