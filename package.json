@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Basic chat app",
     "scripts": {
-        "start": "concurrently \"cd frontend && npm install && npm run dev\" \"cd backend && npm install && npm run dev\""
+        "start": "npm install && concurrently \"cd frontend && npm install && npm run dev\" \"cd backend && npm install && npm run dev\""
     },
     "repository": {
         "type": "git",
