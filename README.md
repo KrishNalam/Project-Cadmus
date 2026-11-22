@@ -45,7 +45,3 @@ backend/
 frontend/
   src/main.js         UI, sign-in, polling, sending messages
 ```
-
-## Team
-
-Krish, Mohammad, Mridul and Dave.
